@@ -8,7 +8,7 @@ printf 'nmcli %s\n' "$*" >>"$log"
 
 case "$*" in
 "-t -f NAME,DEVICE connection show --active")
-	printf '%s:%s\n' "${FAKE_CON:-Anyafulu}" "${FAKE_IFACE:-wlan0}"
+	printf '%s:%s\n' "${FAKE_CON:-HomeNet}" "${FAKE_IFACE:-wlan0}"
 	;;
 *)
 	exit 0

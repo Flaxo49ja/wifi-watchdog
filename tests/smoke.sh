@@ -89,7 +89,7 @@ out=$(FAKE_RATE=81000 FAKE_SIGNAL=-68 "$wd" --once 2>&1); rc=$?
 assert_rc "--once on a healthy link exits 0" "$rc" 0
 assert_has "--once reports the rate" "$out" "rate=81000"
 assert_has "--once reports the signal" "$out" "signal=-68"
-assert_has "--once reports the ssid" "$out" "ssid=Anyafulu"
+assert_has "--once reports the ssid" "$out" "ssid=HomeNet"
 
 reset_env
 out=$(FAKE_SSID= "$wd" --once 2>&1); rc=$?
@@ -100,7 +100,7 @@ echo "== decisions (dry-run) =="
 reset_env
 out=$(MIN_RATE=999999 STRIKES=1 INTERVAL=1 COOLDOWN=60 FAKE_IDLE=10 \
 	timeout 5 "$wd" --dry-run 2>&1)
-assert_has "low rate triggers a reconnect" "$out" "dry-run: would run nmcli connection down/up 'Anyafulu'"
+assert_has "low rate triggers a reconnect" "$out" "dry-run: would run nmcli connection down/up 'HomeNet'"
 assert_lacks "dry-run never calls nmcli" "$(cat "$FAKE_NMCLI_LOG")" "connection down"
 
 reset_env
@@ -121,8 +121,8 @@ echo "== decisions (live, fake nmcli) =="
 reset_env
 out=$(MIN_RATE=999999 STRIKES=1 INTERVAL=1 COOLDOWN=60 FAKE_IDLE=10 \
 	timeout 18 "$wd" 2>&1)
-assert_has "live run reconnects the active connection" "$(cat "$FAKE_NMCLI_LOG")" "nmcli connection down Anyafulu"
-assert_has "live run brings the connection back up" "$(cat "$FAKE_NMCLI_LOG")" "nmcli connection up Anyafulu"
+assert_has "live run reconnects the active connection" "$(cat "$FAKE_NMCLI_LOG")" "nmcli connection down HomeNet"
+assert_has "live run brings the connection back up" "$(cat "$FAKE_NMCLI_LOG")" "nmcli connection up HomeNet"
 assert_has "live run reports the post-reconnect rate" "$out" "after reconnect:"
 
 reset_env

@@ -26,4 +26,4 @@ COOLDOWN=120
 
 # Also append every log line to this file. Leave empty to log to stdout only
 # (journald captures stdout when run as a service).
-#LOGFILE=/home/anayo/.local/state/wifi-watchdog.log
+#LOGFILE=/home/you/.local/state/wifi-watchdog.log

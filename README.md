@@ -17,7 +17,7 @@ debouncing so it does not flap your connection in a loop.
 ## Install
 
 ```sh
-git clone <this repo> ~/Projects/wifi-watchdog
+git clone https://github.com/Flaxo49ja/wifi-watchdog ~/Projects/wifi-watchdog
 cd ~/Projects/wifi-watchdog
 ./install.sh
 ```
@@ -111,8 +111,8 @@ Log lines look like:
 
 ```
 2026-11-18 08:09:31 degraded 1/1: rate=45000kbit/s signal=-68dBm
-2026-11-18 08:09:31 reconnecting (connection: Anyafulu)
-2026-11-18 08:09:43 after reconnect: ssid=Anyafulu rate=45000kbit/s signal=-68dBm
+2026-11-18 08:09:31 reconnecting (connection: HomeNet)
+2026-11-18 08:09:43 after reconnect: ssid=HomeNet rate=45000kbit/s signal=-68dBm
 ```
 
 The `after reconnect` line is the honest bit: it tells you whether the reconnect actually helped.
@@ -133,6 +133,10 @@ The `after reconnect` line is the honest bit: it tells you whether the reconnect
   `COOLDOWN` forever. Raise `STRIKES`, lower `MIN_RATE`, or fix the underlying cause.
 - NetworkManager only. No `wpa_supplicant`-direct or `systemd-networkd` support.
 - The rate is the *negotiated* PHY rate, not measured throughput.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
 
 ## Tests
 
