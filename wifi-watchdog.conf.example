@@ -1,0 +1,29 @@
+# wifi-watchdog configuration
+#
+# Copy to ~/.config/wifi-watchdog.conf (or /etc/wifi-watchdog.conf and pass
+# CONF=/etc/wifi-watchdog.conf). Environment variables of the same name take
+# precedence over everything here. Every value is a whole number.
+
+# Wireless interface. Comment out to use the first one found.
+#IFACE=wlan0
+
+# Reconnect when the negotiated rate drops below this, in kbit/s.
+MIN_RATE=60000
+
+# How many consecutive bad samples before acting. 1 = twitchy, 3 = patient.
+STRIKES=2
+
+# Seconds between samples.
+INTERVAL=15
+
+# Ignore links that have been idle longer than this (ms). Idle interfaces
+# report stale rates; reconnecting them is pointless churn.
+IDLE_SKIP=30000
+
+# Minimum seconds between reconnects, so a persistently bad link cannot make
+# the connection flap in a loop.
+COOLDOWN=120
+
+# Also append every log line to this file. Leave empty to log to stdout only
+# (journald captures stdout when run as a service).
+#LOGFILE=/home/anayo/.local/state/wifi-watchdog.log

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Fake `nmcli` for the test suite: answers the active-connection query and
+# records every call to $FAKE_NMCLI_LOG so tests can assert what was run.
+set -uo pipefail
+
+log=${FAKE_NMCLI_LOG:-/dev/null}
+printf 'nmcli %s\n' "$*" >>"$log"
+
+case "$*" in
+"-t -f NAME,DEVICE connection show --active")
+	printf '%s:%s\n' "${FAKE_CON:-Anyafulu}" "${FAKE_IFACE:-wlan0}"
+	;;
+*)
+	exit 0
+	;;
+esac

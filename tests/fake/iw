@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Fake `iw` for the test suite. Mimics the real output format closely enough to
+# exercise the parsing in bin/wifi-watchdog.sh.
+#
+# Environment: FAKE_IFACE, FAKE_SSID, FAKE_RATE (kbit/s), FAKE_SIGNAL, FAKE_IDLE.
+# An empty FAKE_SSID means "not associated".
+set -uo pipefail
+
+iface=${FAKE_IFACE:-wlan0}
+rate=${FAKE_RATE:-81000}
+signal=${FAKE_SIGNAL:--68}
+idle=${FAKE_IDLE:-120}
+ssid=${FAKE_SSID-Anyafulu}
+mbps=$(awk -v r="$rate" 'BEGIN { printf "%.1f", r / 1000 }')
+
+case "$*" in
+"dev")
+	printf 'phy#0\n\tInterface %s\n\tifindex 3\n' "$iface"
+	;;
+"dev $iface link")
+	if [ -z "$ssid" ]; then
+		echo "Not connected."
+		exit 0
+	fi
+	printf 'Connected to CC:2D:21:BC:A4:39 (on %s)\n' "$iface"
+	printf '\tSSID: %s\n\tfreq: 2412.0\n\tsignal: %s dBm\n' "$ssid" "$signal"
+	printf '\trx bitrate: 54.0 MBit/s MCS 3 40MHz\n\ttx bitrate: %s MBit/s MCS 2 40MHz short GI\n' "$mbps"
+	;;
+"dev $iface station dump")
+	if [ -z "$ssid" ]; then
+		echo "No station found"
+		exit 0
+	fi
+	printf 'Station CC:2D:21:BC:A4:39 (on %s)\n' "$iface"
+	printf '\tinactive time:\t%s ms\n' "$idle"
+	printf '\trx bytes:\t1234567\n\ttx bytes:\t7654321\n'
+	printf '\tsignal:\t%s [%s, %s] dBm\n' "$signal" "$signal" "$signal"
+	printf '\trx bitrate:\t54.0 MBit/s MCS 3 40MHz\n'
+	printf '\ttx bitrate:\t%s MBit/s MCS 2 40MHz short GI\n' "$mbps"
+	;;
+*)
+	echo "fake iw: unhandled args: $*" >&2
+	exit 1
+	;;
+esac

@@ -1,0 +1,14 @@
+[Unit]
+Description=Wi-Fi link rate watchdog
+Documentation=file:%h/.local/share/wifi-watchdog/README.md
+After=NetworkManager.service
+Wants=NetworkManager.service
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/wifi-watchdog.sh
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=default.target
